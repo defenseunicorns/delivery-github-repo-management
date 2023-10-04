@@ -1,0 +1,19 @@
+# On every push to main, run release-please to automatically handle the release process.
+
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    uses: defenseunicorns/delivery-github-actions-workflows/.github/workflows/release-please.yml@main
+    secrets:
+      APPLICATION_ID: ${{ secrets.NARWHAL_BOT_APP_ID }}
+      APPLICATION_PRIVATE_KEY: ${{ secrets.NARWHAL_BOT_SECRET }}

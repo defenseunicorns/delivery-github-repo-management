@@ -1,0 +1,22 @@
+# This workflow is triggered by a comment on a pull request. The comment must contain "/update <command>" to trigger the workflow.
+
+name: update
+on:
+  repository_dispatch:
+    types: [update-command]
+
+permissions:
+  id-token: write
+  contents: write
+
+defaults:
+  run:
+    # We need -e -o pipefail for consistency with GitHub Actions' default behavior
+    shell: bash -e -o pipefail {0}
+
+jobs:
+  update:
+    uses: defenseunicorns/delivery-github-actions-workflows/.github/workflows/update.yml@main
+    secrets:
+      APPLICATION_ID: ${{ secrets.NARWHAL_BOT_APP_ID }}
+      APPLICATION_PRIVATE_KEY: ${{ secrets.NARWHAL_BOT_SECRET }}
