@@ -1,11 +1,12 @@
 .cache/
 .idea/
 .DS_Store
+.vscode
+
 
 # Local .terraform directories
 .terraform/
 *.terraform.*
-
 # .tfstate files
 *.tfstate
 *.tfstate.*

@@ -1,6 +1,7 @@
 include .env
-SHELL := /usr/bin/env bash
 
+LOGLEVEL ?= INFO
+BRANCH_NAME ?= git-xargs-test
 .DEFAULT_GOAL := help
 
 # Optionally add the "-it" flag for docker run commands if the env var "CI" is not set (meaning we are on a local machine and not in github actions)
@@ -71,7 +72,7 @@ autoformat: ## Update files with automatic formatting tools. Uses Docker for max
 
 .PHONY: push-terraform
 push-terraform: ## push changes to terraform repos
-	bash -x ./scripts/do_all_the_stuff.sh -t terraform -b git-xargs-test -e 'echo "hello"'
+	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel $(LOGLEVEL)
 
 .PHONY: debug
 debug:

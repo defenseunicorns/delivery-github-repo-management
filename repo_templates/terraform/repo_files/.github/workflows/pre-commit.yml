@@ -3,7 +3,6 @@ name: pre-commit
 
 on:
   pull_request:
-  merge_group:
 
 
 permissions:
@@ -18,3 +17,5 @@ jobs:
     secrets:
       APPLICATION_ID: ${{ secrets.NARWHAL_BOT_APP_ID }}
       APPLICATION_PRIVATE_KEY: ${{ secrets.NARWHAL_BOT_SECRET }}
+    with:
+      check-types: '["common", "terraform", "golang"]'
