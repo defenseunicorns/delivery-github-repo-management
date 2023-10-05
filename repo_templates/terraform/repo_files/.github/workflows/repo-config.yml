@@ -1,0 +1,22 @@
+name: repo-config
+
+on:
+  schedule:
+    # daily at 11:00 UTC
+    - cron: '0 11 * * *'
+  pull_request:
+
+jobs:
+  repo-config:
+    uses: defenseunicorns/delivery-github-actions-workflows/.github/workflows/repo-config.yml@ci/repo-config-implementation
+    secrets:
+      APPLICATION_ID: ${{ secrets.NARWHAL_BOT_APP_ID }}
+      APPLICATION_PRIVATE_KEY: ${{ secrets.NARWHAL_BOT_SECRET }}
+    with:
+      branch: main
+      checks: |-
+        checks:
+          - context: 'pre-commit / pre-commit-checks (common)'
+          - context: 'pre-commit / pre-commit-checks (golang)'
+          - context: 'pre-commit / pre-commit-checks (terraform)'
+          - context: 'test / e2e-commercial-insecure'
