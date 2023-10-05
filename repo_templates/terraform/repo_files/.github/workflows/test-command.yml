@@ -1,0 +1,27 @@
+# This workflow is triggered by a comment on a pull request. The comment must contain "/test <command>" to trigger the workflow.
+
+# Attribution for a bunch of this goes to CloudPosse
+# https://github.com/cloudposse/actions/blob/master/.github/workflows/test-command.yml
+
+name: test
+on:
+  repository_dispatch:
+    types: [test-command]
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    # We need -e -o pipefail for consistency with GitHub Actions' default behavior
+    shell: bash -e -o pipefail {0}
+
+jobs:
+  e2e-test:
+    uses: defenseunicorns/delivery-github-actions-workflows/.github/workflows/e2e-test.yml@main
+    secrets:
+      APPLICATION_ID: ${{ secrets.NARWHAL_BOT_APP_ID }}
+      APPLICATION_PRIVATE_KEY: ${{ secrets.NARWHAL_BOT_SECRET }}
+      AWS_COMMERCIAL_ROLE_TO_ASSUME: ${{ secrets.NARWHAL_AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+      AWS_GOVCLOUD_ROLE_TO_ASSUME: ${{ secrets.NARWHAL_AWS_GOVCLOUD_ROLE_TO_ASSUME }}
