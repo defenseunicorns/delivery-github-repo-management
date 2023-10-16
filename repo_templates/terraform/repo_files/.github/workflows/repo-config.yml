@@ -16,7 +16,5 @@ jobs:
       branch: main
       checks: |-
         checks:
-          - context: 'pre-commit / pre-commit-checks (common)'
-          - context: 'pre-commit / pre-commit-checks (golang)'
-          - context: 'pre-commit / pre-commit-checks (terraform)'
-          - context: 'test / e2e-commercial-insecure'
+          - context: 'e2e-tests'
+          - context: 'pre-commit'
