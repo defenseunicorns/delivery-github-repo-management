@@ -73,7 +73,3 @@ autoformat: ## Update files with automatic formatting tools. Uses Docker for max
 .PHONY: push-terraform
 push-terraform: ## push changes to terraform repos
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel $(LOGLEVEL)
-
-.PHONY: debug
-debug:
-	echo "debug"
