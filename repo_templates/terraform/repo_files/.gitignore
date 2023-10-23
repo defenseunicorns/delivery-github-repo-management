@@ -60,4 +60,4 @@ examples/zarf-complete-example/build
 
 #ignore lamba builds json file created from deploying lambda resource
 
-examples/complete/builds
+**/ignore

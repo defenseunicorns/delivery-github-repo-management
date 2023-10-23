@@ -35,8 +35,8 @@ _create-folders:
 .PHONY: _test-all
 _test-all: _create-folders
 	# import any TF_VAR_ environment variables into the docker container.
-	TF_VARS := $(shell env | grep '^TF_VAR_' | awk -F= '{printf "-e %s ", $$1}')
-	echo "Running automated tests. This will take several minutes. At times it does not log anything to the console. If you interrupt the test run you will need to log into AWS console and manually delete any orphaned infrastructure."
+	echo "Running automated tests. This will take several minutes. At times it does not log anything to the console. If you interrupt the test run you will need to log into AWS console and manually delete any orphaned infrastructure.";\
+	TF_VARS=$$(env | grep '^TF_VAR_' | awk -F= '{printf "-e %s ", $$1}'); \
 	docker run $(TTY_ARG) --rm \
 		--cap-add=NET_ADMIN \
 		--cap-add=NET_RAW \
@@ -63,50 +63,16 @@ _test-all: _create-folders
 		-e SKIP_SETUP \
 		-e SKIP_TEST \
 		-e SKIP_TEARDOWN \
-		${TF_VARS} \
+		$${TF_VARS} \
 		${BUILD_HARNESS_REPO}:${BUILD_HARNESS_VERSION} \
 		bash -c 'git config --global --add safe.directory /app && cd examples/complete && terraform init -upgrade=true && cd ../../test/e2e && go test -count 1 -v $(EXTRA_TEST_ARGS) .'
-
-.PHONY: bastion-connect
-bastion-connect: _create-folders ## To be used after deploying "secure mode" of examples/complete. It (a) creates a tunnel through the bastion host using sshuttle, and (b) sets up the KUBECONFIG so that the EKS cluster is able to be interacted with. Requires the standard AWS cred environment variables to be set. We recommend using 'aws-vault' to set them.
-	# TODO: Figure out a better way to deal with the bastion's SSH password. Ideally it should come from a terraform output but you can't directly pass inputs to outputs (at least not when you are using "-target")
-	docker run $(TTY_ARG) --rm \
-		--cap-add=NET_ADMIN \
-		--cap-add=NET_RAW \
-		-v "${PWD}:/app" \
-		-v "${PWD}/.cache/tmp:/tmp" \
-		-v "${PWD}/.cache/go:/root/go" \
-		-v "${PWD}/.cache/go-build:/root/.cache/go-build" \
-		-v "${PWD}/.cache/.terraform.d/plugin-cache:/root/.terraform.d/plugin-cache" \
-		-v "${PWD}/.cache/.zarf-cache:/root/.zarf-cache" \
-		--workdir "/app/examples/complete" \
-		-e TF_LOG_PATH \
-		-e TF_LOG \
-		-e GOPATH=/root/go \
-		-e GOCACHE=/root/.cache/go-build \
-		-e TF_PLUGIN_CACHE_MAY_BREAK_DEPENDENCY_LOCK_FILE=true \
-		-e TF_PLUGIN_CACHE_DIR=/root/.terraform.d/plugin-cache \
-		-e AWS_REGION \
-		-e AWS_DEFAULT_REGION \
-		-e AWS_ACCESS_KEY_ID \
-		-e AWS_SECRET_ACCESS_KEY \
-		-e AWS_SESSION_TOKEN \
-		-e AWS_SECURITY_TOKEN \
-		-e AWS_SESSION_EXPIRATION \
-		${BUILD_HARNESS_REPO}:${BUILD_HARNESS_VERSION} \
-		bash -c 'git config --global --add safe.directory /app \
-				&& terraform init -upgrade=true \
-				&& sshuttle -D -e '"'"'sshpass -p "my-password" ssh -q -o CheckHostIP=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="aws ssm --region $(shell cd examples/complete && terraform output -raw bastion_region) start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"'"'"' --dns --disable-ipv6 -vr ec2-user@$(shell cd examples/complete && terraform output -raw bastion_instance_id) $(shell cd examples/complete && terraform output -raw vpc_cidr) \
-				&& aws eks --region $(shell cd examples/complete && terraform output -raw bastion_region) update-kubeconfig --name $(shell cd examples/complete && terraform output -raw eks_cluster_name) \
-				&& echo "SShuttle is running and KUBECONFIG has been set. Try running kubectl get nodes." \
-				&& bash'
 
 .PHONY: test
 test: ## Run all automated tests. Requires access to an AWS account. Costs real money.
 	$(MAKE) _test-all EXTRA_TEST_ARGS="-timeout 3h"
 
-.PHONY: ci-test-common
-ci-test-common: ## Run one test (TestExamplesCompleteCommon). Requires access to an AWS account. Costs real money.
+.PHONY: test-ci-complete
+test-ci-complete: ## Run one test (TestExamplesCompleteCommon). Requires access to an AWS account. Costs real money.
 	$(eval export TF_VAR_region := $(or $(REGION),$(TF_VAR_region),us-east-2))
 	$(MAKE) _test-all EXTRA_TEST_ARGS="-timeout 3h -run TestExamplesCompleteCommon"
 

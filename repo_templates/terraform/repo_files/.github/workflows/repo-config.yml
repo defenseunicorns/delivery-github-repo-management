@@ -4,7 +4,6 @@ on:
   schedule:
     # daily at 11:00 UTC
     - cron: '0 11 * * *'
-  pull_request:
 
 jobs:
   repo-config:
@@ -17,4 +16,4 @@ jobs:
       checks: |-
         checks:
           - context: 'e2e-tests'
-          - context: 'pre-commit'
+          - context: 'pre-commit-checks'
