@@ -222,7 +222,8 @@ main(){
 
   # Call git-xargs with the constructed arguments
   # executable has to go last
-  "$REPO_ROOT/git-xargs" "${args[@]}" "$EXECUTABLE"
+  # custom version of git-xargs for commit signing.. build here: https://github.com/zack-is-cool/git-xargs/tree/feat/add-commit-signing
+  git-xargs "${args[@]}" "$EXECUTABLE"
 }
 
 main
