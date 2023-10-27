@@ -63,3 +63,4 @@ examples/complete/builds
 
 # using custom git-xargs for commit signing
 git-xargs
+.vscode
