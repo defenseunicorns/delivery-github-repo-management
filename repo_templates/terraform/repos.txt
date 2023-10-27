@@ -1,3 +1,2 @@
-defenseunicorns/terraform-aws-rolesanywhere
-defenseunicorns/terraform-aws-uds-vpc
 defenseunicorns/terraform-aws-uds-eks
+defenseunicorns/terraform-aws-uds-bastion

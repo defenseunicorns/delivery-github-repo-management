@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-
 # this script is an entrypoint script to pass parameters to the run.sh scripts under the repo_template directory
+
+. log.sh;
 
 set -e
 trap 'echo ❌ exit at ${0}:${LINENO}, command was: ${BASH_COMMAND} 1>&2' ERR
@@ -20,7 +21,7 @@ if [ -z "${GITHUB_OAUTH_TOKEN}" ]; then
     export GITHUB_OAUTH_TOKEN
   else
     # If the command failed, print an error message and exit
-    echo "Error: GITHUB_OAUTH_TOKEN environment variable is not set and is required by git-xargs" >&2
+    log error "Error: GITHUB_OAUTH_TOKEN environment variable is not set and is required by git-xargs"
     exit 1
   fi
 fi
@@ -186,7 +187,7 @@ fi
 # set helper vars
 export TEMPLATE_ROOT="${REPO_ROOT}/repo_templates/${TEMPLATE}"
 REPOS_FILE=${REPOS_FILE:-"$TEMPLATE_ROOT/repos.txt"} # default to repos.txt in repo_template directory
-COMMIT_MESSAGE=${COMMIT_MESSAGE:-"Update ${BRANCH_NAME} branch from delivery-github-repo-management"}
+COMMIT_MESSAGE=${COMMIT_MESSAGE:-"ci: Update ${BRANCH_NAME} branch from delivery-github-repo-management"}
 LOGLEVEL=${LOGLEVEL:-"INFO"}
 RUN_SCRIPT="${RUN_SCRIPT:-"$TEMPLATE_ROOT/scripts/run.sh"}"
 EXECUTABLE=${EXECUTABLE:-"${RUN_SCRIPT}"}
@@ -221,7 +222,7 @@ main(){
 
   # Call git-xargs with the constructed arguments
   # executable has to go last
-  git-xargs "${args[@]}" "$EXECUTABLE"
+  "$REPO_ROOT/git-xargs" "${args[@]}" "$EXECUTABLE"
 }
 
 main
