@@ -11,9 +11,9 @@ ifndef CI
 endif
 
 # Silent mode by default. Run `make VERBOSE=1` to turn off silent mode.
-# ifndef VERBOSE
-# .SILENT:
-# endif
+ifndef VERBOSE
+.SILENT:
+endif
 
 # Idiomatic way to force a target to always run, by having it depend on this dummy target
 FORCE:
@@ -73,3 +73,7 @@ autoformat: ## Update files with automatic formatting tools. Uses Docker for max
 .PHONY: push-terraform
 push-terraform: ## push changes to terraform repos
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel $(LOGLEVEL)
+
+.PHONY: debug-terraform
+debug-terraform: ## push changes to terraform repos
+	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel debug --dry-run

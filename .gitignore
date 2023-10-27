@@ -60,3 +60,7 @@ examples/zarf-complete-example/build
 #ignore lamba builds json file created from deploying lambda resource
 
 examples/complete/builds
+
+# using custom git-xargs for commit signing
+git-xargs
+.vscode
