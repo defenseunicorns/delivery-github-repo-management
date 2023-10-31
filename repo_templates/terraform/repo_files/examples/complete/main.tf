@@ -10,7 +10,7 @@ locals {
     {
       RootTFModule = replace(basename(path.cwd), "_", "-") # tag names based on the directory name
       ManagedBy    = "Terraform"
-      Repo         = "https://github.com/defenseunicorns/terraform-aws-uds-vpc"
+      Repo         = "https://github.com/defenseunicorns/terraform-aws-vpc"
     }
   )
 }
