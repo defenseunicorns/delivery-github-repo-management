@@ -1,4 +1,4 @@
-defenseunicorns/terraform-aws-uds-eks
-defenseunicorns/terraform-aws-uds-bastion
-defenseunicorns/terraform-aws-uds-lambda
+defenseunicorns/terraform-aws-eks
+defenseunicorns/terraform-aws-bastion
+defenseunicorns/terraform-aws-lambda
 defenseunicorns/terraform-aws-rolesanywhere
