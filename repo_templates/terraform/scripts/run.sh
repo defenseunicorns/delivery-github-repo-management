@@ -18,16 +18,6 @@ root_dir="$(dirname "$(dirname "$(dirname "$current_dir")")")"
 # Source log.sh
 . "$root_dir/scripts/log.sh"
 
-# Items to exclude from the initial copy
-declare -a excludeItems=(
-  ".release-please-manifest.json"
-  "Makefile"
-  "test/e2e"
-  "examples/complete"
-)
-
-log info "exluding copying: $(echo "${excludeItems[@]}")"
-
 # Items to conditionally copy only if they don't exist in the target directory
 declare -a conditionalItems=(
   ".release-please-manifest.json"
@@ -35,6 +25,14 @@ declare -a conditionalItems=(
   "test/e2e"
   "examples/complete"
 )
+
+# Items to always exclude from the copy, relevant to have conditionalItems in here
+declare -a excludeItems=(
+  "${conditionalItems[@]}"
+  # Add any additional items to exclude here
+)
+
+log info "excluding copying: $(echo "${excludeItems[@]}")"
 
 # Enable dotglob option in Bash to consider hidden files
 shopt -s dotglob
@@ -50,7 +48,7 @@ log info "Running rsync from $TEMPLATE_ROOT/repo_files/ to current directory of 
 rsync -av $exclude_flags "$TEMPLATE_ROOT/repo_files/" .
 
 # Conditionally copy specific items only if they don't exist
-log info "conditionally copying if it doesn't exist in the target: $(echo "${excludeItems[@]}")"
+log info "conditionally copying if it doesn't exist in the target directory: $(echo "${excludeItems[@]}")"
 for item in "${conditionalItems[@]}"; do
   target="./$item"
   if [ ! -e "$target" ]; then
@@ -68,6 +66,6 @@ pre-commit install
 pre-commit run -a -v
 
 log info "running go mod tidy"
-go mody tidy -v
+go mod tidy -v
 
 log info "Done!"

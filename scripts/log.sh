@@ -2,8 +2,6 @@
 # stolen from here https://github.com/Zordrak/bashlog/blob/master/log.sh
 # and modified colours to colors :)
 
-set -uo pipefail;
-
 function _log_exception() {
   (
     BASHLOG_FILE=0;
