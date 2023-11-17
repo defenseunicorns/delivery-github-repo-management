@@ -77,3 +77,24 @@ push-terraform: ## push changes to terraform repos
 .PHONY: debug-terraform
 debug-terraform: ## push changes to terraform repos
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel debug --dry-run
+
+.PHONY: renovate-local-debug
+renovate-local: ## run renovate locally, it doesn't seem like you can actually make changes
+	@TOKEN=$$(gh auth token); \
+	if [ -z "$$TOKEN" ]; then \
+		echo "GitHub token not found"; \
+		exit 1; \
+	fi; \
+	export RENOVATE_TOKEN=$$TOKEN; \
+	export GITHUB_COM_TOKEN=$$TOKEN; \
+	RENOVATE_CONFIG_FILE=./renovate.json5 \
+	RENOVATE_DRY_RUN="" \
+	npx renovate \
+	--schedule="" \
+	--require-config=ignored \
+	--log-file=/tmp/renovate/log.json \
+	--log-file-level=debug \
+	--print-config=true \
+	--platform=local \
+	--github-token-warn; \
+	code-insiders -r /tmp/renovate/log.json

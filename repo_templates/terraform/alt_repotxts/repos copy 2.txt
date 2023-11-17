@@ -1,0 +1,18 @@
+#old, before uds rename
+
+defenseunicorns/delivery-aws-iac
+defenseunicorns/terraform-aws-appstream
+defenseunicorns/terraform-aws-eks
+defenseunicorns/terraform-aws-iam-saml-idp
+defenseunicorns/terraform-aws-rolesanywhere
+defenseunicorns/terraform-aws-uds-bastion
+defenseunicorns/terraform-aws-uds-cloudtrail
+defenseunicorns/terraform-aws-uds-eks
+defenseunicorns/terraform-aws-uds-kms
+defenseunicorns/terraform-aws-uds-lambda
+defenseunicorns/terraform-aws-uds-rds
+defenseunicorns/terraform-aws-uds-s3
+defenseunicorns/terraform-aws-uds-s3-irsa
+defenseunicorns/terraform-aws-uds-sops
+defenseunicorns/terraform-aws-uds-vpc
+defenseunicorns/terraform-aws-workspaces

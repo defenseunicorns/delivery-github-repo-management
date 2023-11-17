@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 # this script is an entrypoint script to pass parameters to the run.sh scripts under the repo_template directory
 
-. log.sh;
+# get repo root path
+REPO_ROOT=$(realpath "$(dirname "$(dirname "$0")")")
+export REPO_ROOT
+
+. "${REPO_ROOT}/scripts/log.sh"
 
 set -e
 trap 'echo ❌ exit at ${0}:${LINENO}, command was: ${BASH_COMMAND} 1>&2' ERR
 
 echo -e "Starting script with $# arguments: $@\n"
-
-
 
 # Check if GITHUB_OAUTH_TOKEN is empty
 if [ -z "${GITHUB_OAUTH_TOKEN}" ]; then
@@ -26,10 +28,6 @@ if [ -z "${GITHUB_OAUTH_TOKEN}" ]; then
   fi
 fi
 
-# get repo root path
-REPO_ROOT=$(realpath "$(dirname "$(dirname "$0")")")
-export REPO_ROOT
-
 # script help message
 function help {
   cat <<EOF
@@ -38,7 +36,7 @@ usage: $(basename "$0") <arguments>
 -t|--template               - (required) repo_template directory to target
 -b|--branch                 - (required) branch name to target for each repo
 -r|--repos-file             - (optional) path to repos.txt file to determine which repos to target, defaults to the one in the repo_template directory
--m|--message                - (required) commit message to use for each repo
+-m|--message                - (optional) commit message to use for each repo
 -e|--executable             - (optional) executable to use for git-xargs process, this needs to be the full path to the executable, defaults to the run.sh script in the repo_template relative to the template
 --no-skip-ci                - (optional) do not skip CI for each repo
 --draft                     - (optional) create a draft PR for each repo
@@ -222,6 +220,8 @@ main(){
 
   # Call git-xargs with the constructed arguments
   # executable has to go last
+  log info "List of repos targeted: $(cat "${REPOS_FILE}")"
+  log info "Arguments passed to git-xargs: ${args[@]} ${EXECUTABLE}"
   # custom version of git-xargs for commit signing.. build here: https://github.com/zack-is-cool/git-xargs/tree/feat/add-commit-signing
   git-xargs "${args[@]}" "$EXECUTABLE"
 }
