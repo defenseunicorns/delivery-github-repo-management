@@ -35,6 +35,7 @@ linters-settings:
       - suite-dont-use-pkg
       - suite-extra-assert-call
       - suite-thelper
+      # -require-error causes errors in our e2e test patterns
 issues:
   exclude:
     - "G304" # Potential file inclusion via variable
