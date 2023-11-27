@@ -17,10 +17,10 @@ repos:
         args:
           - "--allow-multiple-documents"
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.2
+    rev: 0.6.3
     hooks:
       - id: fix-smartquotes
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 37.59.7
+    rev: 37.71.0
     hooks:
       - id: renovate-config-validator
