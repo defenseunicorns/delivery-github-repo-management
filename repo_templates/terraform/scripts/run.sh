@@ -66,6 +66,7 @@ pre-commit install
 pre-commit run -a -v
 
 log info "running go mod tidy"
+go get -u ./...
 go mod tidy -v
 
 log info "Done!"

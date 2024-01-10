@@ -75,8 +75,12 @@ push-terraform: ## push changes to terraform repos
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel $(LOGLEVEL)
 
 .PHONY: debug-terraform
-debug-terraform: ## push changes to terraform repos
+debug-terraform: ## clone repos, run script and dry-run git-xargs
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel debug --dry-run
+
+.PHONY: debug-keep-terraform
+debug-keep-terraform: ## clone repos, run script and dry-run git-xargs, this is useful if you want to open the cloned repo and diff the changes interactively
+	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel debug --dry-run --keep-cloned-repositories
 
 .PHONY: renovate-local-debug
 renovate-local: ## run renovate locally to debug
