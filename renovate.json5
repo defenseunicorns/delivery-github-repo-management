@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    // Tells Renovate to maintain one GitHub issue as the "dependency dashboard". See https://docs.renovatebot.com/key-concepts/dashboard
     ":dependencyDashboard",
     // Use semantic commit type fix for dependencies and chore for all others if semantic commits are in use. See https://docs.renovatebot.com/presets-default/#semanticprefixfixdepschoreothers
     ":semanticPrefixFixDepsChoreOthers",
@@ -14,14 +15,10 @@
   ],
   // If we don't specify a timezone then Renovate will use UTC
   "timezone": "America/New_York",
-  "schedule": [
-    "after 7am and before 11am every weekday",
-    "after 7pm and before 11pm every weekday"
-  ],
-  // This will prevent Renovate from automatically rebasing PRs.
-  // Without this, Renovate will rebase PRs whenever it wants to. The 'schedule' param is only for creating PRs. Because we are grouping all changes into one PR without this Renovate will be constantly rebasing that PR which we don't want since every time that happens another set of GHA status checks are kicked off.
+  // fires whenever, this repo should be updated as soon as possible
+  "schedule": ["at any time"],
   // Using a value of "conflicted" means that Renovate will only rebase PRs if they are in a conflicted state. See https://docs.renovatebot.com/configuration-options/#rebasewhen
-  "rebaseWhen": "never",
+  "rebaseWhen": "auto",
   // Labels to set in Pull Request. See https://docs.renovatebot.com/configuration-options/#labels
   "labels": [
     "renovate"
@@ -29,16 +26,15 @@
   // Rate limit PRs to maximum x created per hour. 0 means no limit. See https://docs.renovatebot.com/configuration-options/#prhourlylimit
   "prHourlyLimit": 1,
   // Limit to a maximum of x concurrent branches/PRs. 0 means no limit. See https://docs.renovatebot.com/configuration-options/#prconcurrentlimit
-  "prConcurrentLimit": 0,
+  "prConcurrentLimit": 1,
   // Enable updates to the pre-commit-config.yaml file. See https://docs.renovatebot.com/modules/manager/pre-commit/
   "pre-commit": {
     "enabled": true
   },
-  "customManagers": [
+  "regexManagers": [
     // Custom regex manager for the .env file that follows the pattern documented here: https://docs.renovatebot.com/modules/manager/regex/#advanced-capture
     {
-      "customType": "regex",
-      "fileMatch": ["^.env"],
+      "fileMatch": ["(?:^|\\/).+\\.env$"],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION=(?<currentValue>.*)\\s"
       ],
@@ -47,7 +43,6 @@
     },
     // Custom regex manager for the .tool-versions file that follows the pattern documented here: https://docs.renovatebot.com/modules/manager/regex/#advanced-capture
     {
-      "customType": "regex",
       "fileMatch": ["^.tool-versions$"],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*? (?<currentValue>.*)\\s"
@@ -67,5 +62,20 @@
       "matchDatasources": ["github-tags", "git-tags"],
       "versioning": "loose"
     }
-  ]
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "groupName": "Security Updates",
+    "schedule": [],
+    "dependencyDashboardApproval": false,
+    "minimumReleaseAge": null,
+    "rangeStrategy": "update-lockfile",
+    "commitMessageSuffix": "[SECURITY]",
+    "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
+    "prCreation": "immediate",
+    "labels": ["security"],
+    "automerge": true,
+    "assignees": ["@defenseunicorns/delivery-aws-iac"]
+  },
+  "osvVulnerabilityAlerts": true
 }
