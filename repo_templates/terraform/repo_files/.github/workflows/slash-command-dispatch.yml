@@ -21,7 +21,7 @@ jobs:
           application_private_key: ${{ secrets.NARWHAL_BOT_SECRET }}
 
       - name: Slash Command Dispatch
-        uses: peter-evans/slash-command-dispatch@v3
+        uses: peter-evans/slash-command-dispatch@v4
         with:
           token: ${{ steps.get_workflow_token.outputs.token }}
           reaction-token: ${{ steps.get_workflow_token.outputs.token }}
@@ -41,7 +41,7 @@ jobs:
         application_private_key: ${{ secrets.NARWHAL_BOT_SECRET }}
 
     - name: Slash Command Dispatch
-      uses: peter-evans/slash-command-dispatch@v3
+      uses: peter-evans/slash-command-dispatch@v4
       with:
         token: ${{ steps.get_workflow_token.outputs.token }}
         reaction-token: ${{ steps.get_workflow_token.outputs.token }}
