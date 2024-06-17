@@ -18,6 +18,7 @@ func TestExamplesCompleteCommon(t *testing.T) {
 
 	tempFolder := teststructure.CopyTerraformFolderToTemp(t, "../..", "examples/complete")
 	terraformOptions := &terraform.Options{
+		TerraformBinary: "tofu",
 		TerraformDir: tempFolder,
 		Upgrade:      false,
 		EnvVars: map[string]string{

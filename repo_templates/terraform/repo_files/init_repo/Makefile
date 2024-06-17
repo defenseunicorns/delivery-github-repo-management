@@ -65,7 +65,7 @@ _test-all: _create-folders
 		-e SKIP_TEARDOWN \
 		$${TF_VARS} \
 		${BUILD_HARNESS_REPO}:${BUILD_HARNESS_VERSION} \
-		bash -c 'git config --global --add safe.directory /app && cd examples/complete && terraform init -upgrade=true && cd ../../test/e2e && go test -count 1 -v $(EXTRA_TEST_ARGS) .'
+		bash -c 'git config --global --add safe.directory /app && cd examples/complete && tofu init -upgrade=true && cd ../../test/e2e && go test -count 1 -v $(EXTRA_TEST_ARGS) .'
 
 .PHONY: test
 test: ## Run all automated tests. Requires access to an AWS account. Costs real money.
@@ -119,7 +119,7 @@ pre-commit-terraform: ## Run the terraform pre-commit hooks. Returns nonzero exi
 
 .PHONY: pre-commit-golang
 pre-commit-golang: ## Run the golang pre-commit hooks. Returns nonzero exit code if any hooks fail. Uses Docker for maximum compatibility
-	$(MAKE) _runhooks HOOK="" SKIP="check-added-large-files,check-merge-conflict,detect-aws-credentials,detect-private-key,end-of-file-fixer,fix-byte-order-marker,trailing-whitespace,check-yaml,fix-smartquotes,terraform_fmt,terraform_docs,terraform_checkov,terraform_tflint,renovate-config-validator"
+	$(MAKE) _runhooks HOOK="" SKIP="check-added-large-files,check-merge-conflict,detect-aws-credentials,detect-private-key,end-of-file-fixer,fix-byte-order-marker,trailing-whitespace,check-yaml,fix-smartquotes,terraform_fmt,tofu_docs,tofu_checkov,terraform_tflint,renovate-config-validator"
 
 .PHONY: pre-commit-renovate
 pre-commit-renovate: ## Run the renovate pre-commit hooks. Returns nonzero exit code if any hooks fail. Uses Docker for maximum compatibility
@@ -127,7 +127,7 @@ pre-commit-renovate: ## Run the renovate pre-commit hooks. Returns nonzero exit 
 
 .PHONY: pre-commit-common
 pre-commit-common: ## Run the common pre-commit hooks. Returns nonzero exit code if any hooks fail. Uses Docker for maximum compatibility
-	$(MAKE) _runhooks HOOK="" SKIP="go-fmt,golangci-lint,terraform_fmt,terraform_docs,terraform_checkov,terraform_tflint,renovate-config-validator"
+	$(MAKE) _runhooks HOOK="" SKIP="go-fmt,golangci-lint,terraform_fmt,tofu_docs,tofu_checkov,terraform_tflint,renovate-config-validator"
 
 .PHONY: fix-cache-permissions
 fix-cache-permissions: ## Fixes the permissions on the pre-commit cache
@@ -135,4 +135,4 @@ fix-cache-permissions: ## Fixes the permissions on the pre-commit cache
 
 .PHONY: autoformat
 autoformat: ## Update files with automatic formatting tools. Uses Docker for maximum compatibility.
-	$(MAKE) _runhooks HOOK="" SKIP="check-added-large-files,check-merge-conflict,detect-aws-credentials,detect-private-key,check-yaml,golangci-lint,terraform_checkov,terraform_tflint,renovate-config-validator"
+	$(MAKE) _runhooks HOOK="" SKIP="check-added-large-files,check-merge-conflict,detect-aws-credentials,detect-private-key,check-yaml,golangci-lint,tofu_checkov,terraform_tflint,renovate-config-validator"

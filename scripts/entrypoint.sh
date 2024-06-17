@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 # this script is an entrypoint script to pass parameters to the run.sh scripts under the repo_template directory
 
 # get repo root path
@@ -141,6 +142,10 @@ while (("$#")); do
     KEEP_CLONED_REPOSITORIES=true
     shift
     ;;
+  --executable-relative-to-repo-path)
+    EXECUTABLE_RELATIVE_TO_REPO_PATH=true
+    shift
+    ;;
   # help message
   -h | --help)
     help
@@ -183,7 +188,15 @@ if [ $missing_args -eq 1 ]; then
 fi
 
 # set helper vars
+
 export TEMPLATE_ROOT="${REPO_ROOT}/repo_templates/${TEMPLATE}"
+
+# Check if EXECUTABLE_RELATIVE_TO_REPO_PATH is set and not empty
+if [ "$EXECUTABLE_RELATIVE_TO_REPO_PATH" ]; then
+  # Prepend TEMPLATE_ROOT to EXECUTABLE
+  EXECUTABLE="${TEMPLATE_ROOT}/${EXECUTABLE}"
+fi
+
 REPOS_FILE=${REPOS_FILE:-"$TEMPLATE_ROOT/repos.txt"} # default to repos.txt in repo_template directory
 COMMIT_MESSAGE=${COMMIT_MESSAGE:-"ci: Update ${BRANCH_NAME} branch from delivery-github-repo-management"}
 LOGLEVEL=${LOGLEVEL:-"INFO"}
