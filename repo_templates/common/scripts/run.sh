@@ -2,7 +2,7 @@
 
 export SKIP=go-fmt,golangci-lint,terraform_fmt,terraform_docs,terraform_checkov,terraform_tflint,renovate-config-validator
 
-FILES="$TEMPLATE_ROOT/repo_files/*"
+FILES="$TEMPLATE_ROOT/repo_files/init_repo/*"
 
 shopt -s dotglob  # Enable dotglob option in Bash to copy hidden files
 

@@ -2,6 +2,7 @@ include .env
 
 LOGLEVEL ?= INFO
 BRANCH_NAME ?= git-xargs-test
+COMMIT_MESSAGE?= "chore: update"
 .DEFAULT_GOAL := help
 
 # Optionally add the "-it" flag for docker run commands if the env var "CI" is not set (meaning we are on a local machine and not in github actions)
@@ -81,6 +82,10 @@ debug-terraform: ## clone repos, run script and dry-run git-xargs
 .PHONY: debug-keep-terraform
 debug-keep-terraform: ## clone repos, run script and dry-run git-xargs, this is useful if you want to open the cloned repo and diff the changes interactively
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) --no-skip-ci --loglevel debug --dry-run --keep-cloned-repositories
+
+.PHONY: terraform-tofu-migration
+terraform-tofu-migration: ## clone repos, run script and dry-run git-xargs, this is useful if you want to open the cloned repo and diff the changes interactively
+	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) -m "$(COMMIT_MESSAGE)" --no-skip-ci --loglevel debug --executable-relative-to-repo-path -e scripts/migrate-to-tofu.sh
 
 .PHONY: renovate-local-debug
 renovate-local: ## run renovate locally to debug

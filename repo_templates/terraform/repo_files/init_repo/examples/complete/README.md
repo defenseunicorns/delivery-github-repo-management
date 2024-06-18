@@ -1,12 +1,11 @@
 
 # examples/complete
 
-
 # examples/complete
 
 Example that uses the module with many of its configurations. Used in CI E2E tests.
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGINNING OF PRE-COMMIT-OPENTOFU DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -48,4 +47,4 @@ Example that uses the module with many of its configurations. Used in CI E2E tes
 | Name | Description |
 |------|-------------|
 | <a name="output_reserved_ips_per_subnet"></a> [reserved\_ips\_per\_subnet](#output\_reserved\_ips\_per\_subnet) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-OPENTOFU DOCS HOOK -->

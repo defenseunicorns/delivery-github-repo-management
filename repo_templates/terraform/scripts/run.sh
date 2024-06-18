@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# this script is intended to be used to onboard a repo with the boilerplate files and configurations
+
 # check if rsync is installed, pre-commit is installed, and go is installed
 commands=(rsync pre-commit go)
 for command in "${commands[@]}"; do
@@ -43,16 +46,16 @@ for item in "${excludeItems[@]}"; do
   exclude_flags="$exclude_flags --exclude=$item"
 done
 
-log info "Running rsync from $TEMPLATE_ROOT/repo_files/ to current directory of ${PWD}"
+log info "Running rsync from $TEMPLATE_ROOT/repo_files/init_repo/ to current directory of ${PWD}"
 # Copy everything except the items to exclude
-rsync -av $exclude_flags "$TEMPLATE_ROOT/repo_files/" .
+rsync -av $exclude_flags "$TEMPLATE_ROOT/repo_files/init_repo/" .
 
 # Conditionally copy specific items only if they don't exist
 log info "conditionally copying if it doesn't exist in the target directory: $(echo "${excludeItems[@]}")"
 for item in "${conditionalItems[@]}"; do
   target="./$item"
   if [ ! -e "$target" ]; then
-    src="$TEMPLATE_ROOT/repo_files/$item"
+    src="$TEMPLATE_ROOT/repo_files/init_repo/$item"
     rsync -av "$src" "./"
   fi
 done
