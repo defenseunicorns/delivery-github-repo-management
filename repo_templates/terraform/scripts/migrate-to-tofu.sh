@@ -21,7 +21,7 @@ insert_line="		TerraformBinary: \"tofu\","
 
 rg -Hl -g "*_test.go" "&terraform.Options\{" . | while read -r file; do
   echo "Processing $file"
-  # Check if the file contains both the pattern and insert_line
+  # Check if the file contains insert_line
   if rg -q "$insert_line" "$file"; then
     echo "$file already contains $insert_line"
   else
