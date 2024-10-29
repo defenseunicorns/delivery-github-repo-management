@@ -1,9 +1,10 @@
-defenseunicorns/delivery-aws-iac
+//defenseunicorns/delivery-aws-iac
 //defenseunicorns/terraform-aws-eks
-defenseunicorns/terraform-aws-rolesanywhere
-defenseunicorns/terraform-aws-bastion
-defenseunicorns/terraform-aws-cloudtrail
-defenseunicorns/terraform-aws-lambda
-defenseunicorns/terraform-aws-rds
+//defenseunicorns/terraform-aws-rolesanywhere
+//defenseunicorns/terraform-aws-bastion
+//defenseunicorns/terraform-aws-cloudtrail
+//defenseunicorns/terraform-aws-lambda
+//defenseunicorns/terraform-aws-rds
 //defenseunicorns/terraform-aws-vpc
-defenseunicorns/terraform-aws-s3-irsa
+//defenseunicorns/terraform-aws-s3-irsa
+defenseunicorns/terraform-aws-transit-gateway
