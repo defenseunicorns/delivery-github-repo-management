@@ -4,7 +4,7 @@ defenseunicorns/terraform-aws-rolesanywhere
 defenseunicorns/terraform-aws-bastion
 defenseunicorns/terraform-aws-cloudtrail
 defenseunicorns/terraform-aws-lambda
-defenseunicorns/terraform-aws-rds
+// archived lol defenseunicorns/terraform-aws-rds
 defenseunicorns/terraform-aws-vpc
 defenseunicorns/terraform-aws-s3-irsa
 defenseunicorns/terraform-aws-transit-gateway
