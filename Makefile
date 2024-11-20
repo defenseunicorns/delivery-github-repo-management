@@ -91,6 +91,10 @@ terraform-tofu-migration: ## clone repos, run script and dry-run git-xargs, this
 remove-repo-config-workflow: ## clone repos, run script and dry-run git-xargs, this is useful if you want to open the cloned repo and diff the changes interactively
 	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) -m "$(COMMIT_MESSAGE)" --no-skip-ci --loglevel debug --executable-relative-to-repo-path -r ./repo_templates/terraform/alt_repotxts/repo-config-removal.txt -e scripts/remove-repo-config-workflow.sh
 
+.PHONY: remote-renovate-migration
+remote-renovate-migration: ## clone repos, run script and dry-run git-xargs
+	./scripts/entrypoint.sh -t terraform -b $(BRANCH_NAME) -m "$(COMMIT_MESSAGE)" --no-skip-ci --skip-archived-repos --loglevel debug --executable-relative-to-repo-path -e scripts/migrate-to-remote-renovate.sh
+
 .PHONY: renovate-local-debug
 renovate-local: ## run renovate locally to debug
 	@TOKEN=$$(gh auth token); \

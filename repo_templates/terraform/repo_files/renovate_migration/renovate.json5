@@ -1,0 +1,6 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>defenseunicorns/narwhal-delivery-renovate-config:terraformReposAuto.json5"
+  ]
+}

@@ -40,6 +40,7 @@ usage: $(basename "$0") <arguments>
 -m|--message                - (optional) commit message to use for each repo
 -e|--executable             - (optional) executable to use for git-xargs process, this needs to be the full path to the executable, defaults to the run.sh script in the repo_template relative to the template
 --no-skip-ci                - (optional) do not skip CI for each repo
+--skip-archived-repos       - (optional) skip archived repos in the repos.txt file
 --draft                     - (optional) create a draft PR for each repo
 --dry-run                   - (optional) do not actually run the git-xargs process, just output the command that would be run
 --keep-cloned-repositories  - (optional) do not delete the cloned local repositories after the git-xargs process is complete
@@ -130,6 +131,10 @@ while (("$#")); do
     SKIP_CI=false
     shift
     ;;
+  --skip-archived-repos)
+    SKIP_ARCHIVED_REPOS=true
+    shift
+    ;;
   --draft)
     DRAFT=true
     shift
@@ -203,6 +208,7 @@ LOGLEVEL=${LOGLEVEL:-"INFO"}
 RUN_SCRIPT="${RUN_SCRIPT:-"$TEMPLATE_ROOT/scripts/run.sh"}"
 EXECUTABLE=${EXECUTABLE:-"${RUN_SCRIPT}"}
 SKIP_CI=${SKIP_CI:-"true"}
+SKIP_ARCHIVED_REPOS=${SKIP_ARCHIVED_REPOS:-"false"}
 DRAFT=${DRAFT:-"false"}
 
 main(){
@@ -217,6 +223,10 @@ main(){
   # Conditionally add other arguments
   if [[ "${SKIP_CI}" == "false" ]]; then
     args+=(--no-skip-ci)
+  fi
+
+  if [[ "${SKIP_ARCHIVED_REPOS}" == "true" ]]; then
+    args+=(--skip-archived-repos)
   fi
 
   if [[ "${DRAFT}" == "true" ]]; then
